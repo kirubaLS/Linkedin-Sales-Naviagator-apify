@@ -20,6 +20,7 @@
     "maxCompanies": {
       "title": "Max companies to collect",
       "type": "integer",
+      "description": "The maximum number of companies you want to scrape from the search results.",
       "default": 30,
       "minimum": 1,
       "maximum": 200
