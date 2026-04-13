@@ -1,6 +1,6 @@
 {
-  "title": "LinkedIn SalesNav Scraper v2",
-  "description": "Paste your Sales Navigator URL. Uses Voyager JSON API (with HTML fallback) to find companies.",
+  "title": "LinkedIn SalesNav Company Scraper v3",
+  "description": "Decodes a Sales Navigator URL and scrapes matching public company data using Typeahead API + Google fallback.",
   "type": "object",
   "schemaVersion": 1,
   "properties": {
@@ -14,21 +14,20 @@
     "keywordsOverride": {
       "title": "Keywords override (optional)",
       "type": "string",
-      "description": "Force specific keywords instead of those decoded from the URL.",
+      "description": "Override keywords instead of using those from the URL.",
       "editor": "textfield"
     },
     "maxCompanies": {
-      "title": "Max companies to scrape",
+      "title": "Max companies to collect",
       "type": "integer",
-      "description": "Keep under 50 for free tier stability.",
       "default": 30,
       "minimum": 1,
       "maximum": 200
     },
     "maxSearchPages": {
-      "title": "Max search pages",
+      "title": "Max HTML search pages to crawl",
       "type": "integer",
-      "description": "Voyager API returns 10 results/page. 5 pages = up to 50 companies.",
+      "description": "Only used by Strategy B (HTML fallback). Strategy A (Typeahead) handles pagination via keyword variants.",
       "default": 5,
       "minimum": 1,
       "maximum": 20
@@ -36,27 +35,33 @@
     "requestDelayMs": {
       "title": "Base delay between requests (ms)",
       "type": "integer",
-      "description": "Higher = safer. Use 8000-12000ms if you hit auth walls or 429s.",
+      "description": "Increase to 10000-15000 if you hit auth walls. Lower = faster but riskier.",
       "default": 6000,
       "minimum": 2000,
       "maximum": 20000
     },
     "deepScrape": {
-      "title": "Deep scrape /about/ page",
+      "title": "Deep scrape each company /about/ page",
       "type": "boolean",
-      "description": "Fetch each company's About page for website, specialties, founded date etc.",
+      "description": "Fetches full data: website, specialties, founded year, description, etc.",
+      "default": true
+    },
+    "enableGoogleFallback": {
+      "title": "Enable Google/Bing SERP fallback",
+      "type": "boolean",
+      "description": "If LinkedIn strategies yield < maxCompanies results, search Google for matching LinkedIn pages.",
       "default": true
     },
     "useApifyProxy": {
       "title": "Use Apify Proxy",
       "type": "boolean",
-      "description": "Keep enabled. Free tier uses Datacenter proxies. Residential (paid) works much better for LinkedIn.",
+      "description": "Highly recommended. Free tier = Datacenter proxies (moderate success). Paid = Residential (best).",
       "default": true
     },
     "proxyCountryCode": {
-      "title": "Proxy Country Code (ISO 3166-1 alpha-2)",
+      "title": "Proxy Country Code",
       "type": "string",
-      "description": "IMPORTANT: Match to your target region. IN=India, US=USA, GB=UK, SG=Singapore, DE=Germany.",
+      "description": "Match to your target region. IN=India, US=USA, GB=UK, SG=Singapore, DE=Germany, AU=Australia.",
       "default": "IN",
       "editor": "textfield"
     }
