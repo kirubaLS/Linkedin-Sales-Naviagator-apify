@@ -1,62 +1,62 @@
 {
-  "title": "LinkedIn SalesNav Scraper",
-  "description": "Paste your Sales Navigator URL. Decodes filters and scrapes public company data.",
+  "title": "LinkedIn SalesNav Scraper v2",
+  "description": "Paste your Sales Navigator URL. Uses Voyager JSON API (with HTML fallback) to find companies.",
   "type": "object",
   "schemaVersion": 1,
   "properties": {
     "salesNavUrl": {
       "title": "Sales Navigator Search URL",
       "type": "string",
-      "description": "Paste the full URL from your Sales Navigator account search.",
+      "description": "Full URL from your Sales Navigator company search.",
       "editor": "textfield",
-      "prefill": "https://www.linkedin.com/sales/search/company?query=(filters:List((type:REGION,values:List((id:105214831,text:Greater+Bengaluru+Area,selectionType:INCLUDED))),(keywords:machine+learning)))"
+      "prefill": "https://www.linkedin.com/sales/search/company?query=(filters:List((type:REGION,values:List((id:105214831,text:Greater+Bengaluru+Area,selectionType:INCLUDED))),(type:COMPANY_HEADCOUNT,values:List((id:F,text:501-1000,selectionType:INCLUDED)))),keywords:machine+learning,spellCorrectionEnabled:true)"
     },
     "keywordsOverride": {
       "title": "Keywords override (optional)",
       "type": "string",
-      "description": "Optional: Force specific keywords for the search.",
+      "description": "Force specific keywords instead of those decoded from the URL.",
       "editor": "textfield"
     },
     "maxCompanies": {
       "title": "Max companies to scrape",
       "type": "integer",
-      "description": "Keep under 50 for stability.",
+      "description": "Keep under 50 for free tier stability.",
       "default": 30,
       "minimum": 1,
-      "maximum": 500
+      "maximum": 200
     },
     "maxSearchPages": {
       "title": "Max search pages",
       "type": "integer",
-      "description": "Number of pages to crawl per filter combination.",
+      "description": "Voyager API returns 10 results/page. 5 pages = up to 50 companies.",
       "default": 5,
       "minimum": 1,
-      "maximum": 40
+      "maximum": 20
     },
     "requestDelayMs": {
-      "title": "Base delay (ms)",
+      "title": "Base delay between requests (ms)",
       "type": "integer",
-      "description": "Slower is safer. Use 5000-10000ms if you encounter 'Auth Walls'.",
+      "description": "Higher = safer. Use 8000-12000ms if you hit auth walls or 429s.",
       "default": 6000,
-      "minimum": 1000,
-      "maximum": 15000
+      "minimum": 2000,
+      "maximum": 20000
     },
     "deepScrape": {
       "title": "Deep scrape /about/ page",
       "type": "boolean",
-      "description": "Visit company pages to get full details (description, website, etc).",
+      "description": "Fetch each company's About page for website, specialties, founded date etc.",
       "default": true
     },
     "useApifyProxy": {
       "title": "Use Apify Proxy",
       "type": "boolean",
-      "description": "Always keep enabled. Uses Datacenter proxies for free users.",
+      "description": "Keep enabled. Free tier uses Datacenter proxies. Residential (paid) works much better for LinkedIn.",
       "default": true
     },
     "proxyCountryCode": {
-      "title": "Proxy Country Code (ISO)",
+      "title": "Proxy Country Code (ISO 3166-1 alpha-2)",
       "type": "string",
-      "description": "CRITICAL: Match this to your search region (e.g., 'IN' for India, 'US' for USA, 'GB' for UK).",
+      "description": "IMPORTANT: Match to your target region. IN=India, US=USA, GB=UK, SG=Singapore, DE=Germany.",
       "default": "IN",
       "editor": "textfield"
     }
