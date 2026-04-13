@@ -1,0 +1,11 @@
+{
+  "actorSpecification": 1,
+  "name": "linkedin-salenav-company-scraper",
+  "title": "LinkedIn SalesNav → Public Company Scraper (No Login)",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 512,
+  "maxMemoryMbytes": 2048,
+  "readme": "./README.md",
+  "input": "./.actor/input_schema.json"
+}
